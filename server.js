@@ -17,6 +17,7 @@ const port = process.env.PORT || 3000;
 const secret = process.env.JWT_SECRET || "your_secret_key";
 
 // Middleware
+app.set("trust proxy", 1); // trust first proxy
 app.use(helmet());
 app.use(cors());
 app.use(bodyParser.json());
@@ -24,8 +25,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Rate Limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  windowMs: process.env.RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000, // 15 minutes
+  max: process.env.RATE_LIMIT_MAX || 100, // limit each IP to 100 requests per windowMs
   message: "Too many requests from this IP, please try again later.",
 });
 app.use(limiter);
@@ -67,6 +68,11 @@ sequelize
   .catch((err) => {
     console.error("Unable to connect to the database:", err);
   });
+
+sequelize
+  .sync()
+  .then(() => console.log("Database synced"))
+  .catch((err) => console.error("Error syncing database:", err));
 
 // User registration
 app.post("/register", async (req, res) => {
