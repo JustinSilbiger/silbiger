@@ -31,6 +31,8 @@ document
         if (result.role === "admin") {
           document.getElementById("adminDropdown").style.display = "block";
         }
+
+        // Hide the login modal using Bootstrap's modal API
         const loginModal = bootstrap.Modal.getInstance(
           document.getElementById("loginModal")
         );
@@ -273,6 +275,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (role === "admin") {
       document.getElementById("adminDropdown").style.display = "block";
     }
+  } else {
+    document.getElementById("loginLink").style.display = "block";
+    document.getElementById("logout-section").style.display = "none";
+    document.getElementById("user-section").style.display = "none";
+    document.getElementById("adminDropdown").style.display = "none";
   }
 });
 

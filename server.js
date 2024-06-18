@@ -18,7 +18,17 @@ const secret = process.env.JWT_SECRET || "your_secret_key";
 
 // Middleware
 app.set("trust proxy", 1); // trust first proxy
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "https://cdn.jsdelivr.net"],
+        styleSrc: ["'self'", "https://cdn.jsdelivr.net"],
+      },
+    },
+  })
+);
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
