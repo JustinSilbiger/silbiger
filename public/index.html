@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/dompurify@2.3.4/dist/purify.min.js" integrity="sha384-/6z7JdQaTj6Hl5I8CyzKlAEuD4Wl2cJphzTwU8l7yCMn/ZD/+eFNucit5nlppC5d" crossorigin="anonymous"></script>
 </head>
 <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
@@ -143,7 +142,7 @@
             
             <form id="searchForm" class="">
                 <div class="form-group mb-3">
-                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter a first name here">
+                <input type="text" class="form-control" id="searchFirstName" name="searchFirstName" placeholder="Enter a first name here">
                 </div>
                 <button type="submit" class="btn btn-dark w-100">Search</button>
                 <button type="reset" class="btn btn-dark w-100 mt-2" id="clearButton">Clear</button>
@@ -175,29 +174,29 @@
         <div class="modal-body">
           <form action="https://formspree.io/f/xyyrzdbn" method="POST" class="needs-validation" novalidate>
             <div class="mb-3">
-              <label for="firstName" class="form-label">First Name:</label>
-              <input type="text" class="form-control" id="firstName" name="firstName" required>
+              <label for="contactFirstName" class="form-label">First Name:</label>
+              <input type="text" class="form-control" id="contactFirstName" name="contactFirstName" required>
               <div class="invalid-feedback">
                 Please enter your first name.
               </div>
             </div>
             <div class="mb-3">
-              <label for="lastName" class="form-label">Last Name:</label>
-              <input type="text" class="form-control" id="lastName" name="lastName" required>
+              <label for="contactLastName" class="form-label">Last Name:</label>
+              <input type="text" class="form-control" id="contactLastName" name="contactLastName" required>
               <div class="invalid-feedback">
                 Please enter your last name.
               </div>
             </div>
             <div class="mb-3">
-              <label for="email" class="form-label">Your email:</label>
-              <input type="email" class="form-control" id="email" name="email" required>
+              <label for="contactEmail" class="form-label">Your email:</label>
+              <input type="email" class="form-control" id="contactEmail" name="contactEmail" required>
               <div class="invalid-feedback">
                 Please enter a valid email address.
               </div>
             </div>
             <div class="mb-3">
-              <label for="message" class="form-label">Your message:</label>
-              <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+              <label for="contactMessage" class="form-label">Your message:</label>
+              <textarea class="form-control" id="contactMessage" name="contactMessage" rows="4" required></textarea>
               <div class="invalid-feedback">
                 Please enter your message.
               </div>
