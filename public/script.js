@@ -63,7 +63,7 @@ document
     e.preventDefault();
 
     const firstName = DOMPurify.sanitize(
-      document.getElementById("firstName").value
+      document.getElementById("searchFirstName").value
     );
 
     try {
