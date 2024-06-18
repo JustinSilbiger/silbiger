@@ -1,0 +1,150 @@
+* { 
+    font-family: "Crimson Text", serif;
+    font-weight: 600;
+    font-style: normal;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+
+
+    
+    
+
+    }
+
+
+
+body {
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+
+.carousel-img {
+    margin-top: 20px;
+    max-height: 400px; /* Set the maximum height for the images */
+    width: auto; /* Ensure the width is auto to maintain aspect ratio */
+    object-fit: cover; /* Optionally, cover the entire area while maintaining the aspect ratio */
+    object-position: top; /* Align the image to the top */
+}
+  
+
+  
+  
+
+.position-relative {
+    position: relative;
+  }
+  
+  .position-absolute {
+    position: absolute;
+  }
+  
+  .top-0 {
+    top: 0;
+  }
+  
+  .right-0 {
+    right: 0;
+  }
+  
+  .m-2 {
+    margin: 0.5rem;
+  }
+  
+  .button-container .btn {
+    margin-right: 0.5rem;
+  }
+  
+  .button-container .btn:last-child {
+    margin-right: 0;
+  }
+  
+  .pointer-hover {
+    cursor: pointer;
+  }
+  
+
+.container {
+    flex: 1;
+}
+
+footer {
+    background-color: #eef0f3;
+    text-align: center;
+    padding: 2rem 0;
+    width: 100%;
+}
+
+footer .container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+footer .container h5 {
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+footer .container p,
+footer .container a {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+footer .container ul {
+    list-style: none;
+    padding: 0;
+}
+
+footer .container ul li {
+    margin-bottom: 0.5rem;
+}
+
+footer .container ul li a {
+    text-decoration: none;
+    color: #007bff;
+    transition: color 0.2s;
+}
+
+footer .container ul li a:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+footer .p-3 {
+    background-color: rgba(0, 0, 0, 0.2);
+    font-size: 0.8rem;
+}
+
+footer .col-lg-6 {
+    padding: 1rem;
+}
+
+.container h2 {
+    margin-bottom: 1rem;
+}
+
+.container p {
+    margin-bottom: 2rem;
+}
+
+/* Additional styles for the new container */
+.container.mt-5 h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.container.mt-5 p {
+    font-size: 1rem;
+    color: #555;
+}
