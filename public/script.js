@@ -58,7 +58,7 @@ document
   .addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const firstName = document.getElementById("searchFirstName").value;
+    const firstName = document.getElementById("firstName").value;
 
     try {
       const response = await fetch(
@@ -78,15 +78,15 @@ document
           const li = document.createElement("li");
           li.classList.add("list-group-item", "position-relative");
           li.innerHTML = `
-                  <strong>Name:</strong> ${member.first_name} ${
+          <strong>Name:</strong> ${member.first_name} ${
             member.last_name || ""
           }<br>
-                  <strong>Status:</strong> ${member.status || "N/A"}<br>
-                  <strong>Member ID:</strong> ${member.member_id || "N/A"}<br>
-                  <strong>Married:</strong> ${member.married || "N/A"}<br>
-                  <strong>Birthdate:</strong> ${member.birthdate || "N/A"}<br>
-                  <strong>Comments:</strong> ${member.comments || "N/A"}
-              `;
+          <strong>Status:</strong> ${member.status || "N/A"}<br>
+          <strong>Member ID:</strong> ${member.member_id || "N/A"}<br>
+          <strong>Married:</strong> ${member.married || "N/A"}<br>
+          <strong>Birthdate:</strong> ${member.birthdate || "N/A"}<br>
+          <strong>Comments:</strong> ${member.comments || "N/A"}
+        `;
 
           const role = localStorage.getItem("role");
           if (role === "admin") {
