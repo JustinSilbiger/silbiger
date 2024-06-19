@@ -25,6 +25,8 @@ app.use(
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'", "https://cdn.jsdelivr.net"],
         styleSrc: ["'self'", "https://cdn.jsdelivr.net"],
+        formAction: ["'self'", "https://formspree.io"], // Allow form actions to Formspree
+        objectSrc: ["'self'"],
       },
     },
   })
