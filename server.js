@@ -76,11 +76,26 @@ app.get("/test-db", async (req, res) => {
   }
 });
 
-// Function to seed the database
-const seedFilePath = path.join(__dirname, "dbSeed.sql");
+// Start server
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
+// Verify database connection
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log("Connected to PostgreSQL via Sequelize");
+  })
+  .catch((err) => {
+    console.error("Unable to connect to the database:", err);
+  });
+
 const seedDatabase = async () => {
-  const seedQuery = fs.readFileSync(seedFilePath, "utf-8");
   try {
+    const seedFilePath = path.join(__dirname, "dbSeed.sql");
+    const seedQuery = fs.readFileSync(seedFilePath, "utf-8");
+    console.log("Seeding database...");
     await sequelize.query(seedQuery);
     console.log("Database seeded successfully.");
   } catch (error) {
@@ -88,28 +103,13 @@ const seedDatabase = async () => {
   }
 };
 
-// Start server function
-const startServer = async () => {
-  try {
-    await sequelize.authenticate();
-    console.log(
-      "Connection to the database has been established successfully."
-    );
-
-    await sequelize.sync();
+sequelize
+  .sync()
+  .then(async () => {
     console.log("Database synced");
-
     await seedDatabase();
-
-    app.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
-    });
-  } catch (error) {
-    console.error("Unable to connect to the database:", error);
-  }
-};
-
-startServer();
+  })
+  .catch((err) => console.error("Error syncing database:", err));
 
 // User registration
 app.post("/register", async (req, res) => {
