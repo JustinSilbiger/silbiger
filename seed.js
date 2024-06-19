@@ -6,6 +6,8 @@ const seedDatabase = async () => {
   const seedFilePath = path.join(__dirname, "seeds", "dbSeed.sql");
   const seedSQL = fs.readFileSync(seedFilePath, "utf-8");
 
+  console.log("Starting database seeding...");
+
   try {
     await sequelize.query(seedSQL);
     console.log("Database seeded successfully.");
