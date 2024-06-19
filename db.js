@@ -4,6 +4,12 @@ const { Sequelize, DataTypes } = require("sequelize");
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: "postgres",
+  dialectOptions: {
+    ssl: {
+      require: true, // This will help you connect to Render's database with SSL
+      rejectUnauthorized: false, // This line is for development purposes only, you might want to remove it in production
+    },
+  },
   pool: {
     max: 10,
     min: 0,
