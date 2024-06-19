@@ -1,5 +1,4 @@
-require("dotenv").config(); // Ensure you have dotenv installed and configured
-
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const { sequelize, FamilyMember, User } = require("./db");
@@ -17,7 +16,7 @@ const port = process.env.PORT || 3000;
 const secret = process.env.JWT_SECRET || "your_secret_key";
 
 // Middleware
-app.set("trust proxy", 1); // trust first proxy
+app.set("trust proxy", 1);
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -35,8 +34,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Rate Limiting
 const limiter = rateLimit({
-  windowMs: process.env.RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000, // 15 minutes
-  max: process.env.RATE_LIMIT_MAX || 100, // limit each IP to 100 requests per windowMs
+  windowMs: process.env.RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000,
+  max: process.env.RATE_LIMIT_MAX || 100,
   message: "Too many requests from this IP, please try again later.",
 });
 app.use(limiter);
@@ -66,10 +65,22 @@ const authorizeAdmin = (req, res, next) => {
   next();
 };
 
+// Test route to verify database connection
+app.get("/test-db", async (req, res) => {
+  try {
+    const result = await sequelize.query("SELECT 1+1 AS result");
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Start server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
+// Verify database connection
 sequelize
   .authenticate()
   .then(() => {
@@ -112,7 +123,7 @@ app.post("/login", async (req, res) => {
     const token = jwt.sign({ id: user.id, role: user.role }, secret, {
       expiresIn: "1h",
     });
-    res.json({ token, role: user.role }); // Ensure role is part of the response
+    res.json({ token, role: user.role });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -176,9 +187,7 @@ app.put(
   async (req, res) => {
     const { id } = req.params;
     try {
-      const [updated] = await FamilyMember.update(req.body, {
-        where: { id },
-      });
+      const [updated] = await FamilyMember.update(req.body, { where: { id } });
       if (updated) {
         const updatedFamilyMember = await FamilyMember.findByPk(id);
         res.status(200).json(updatedFamilyMember);
@@ -199,9 +208,7 @@ app.delete(
   async (req, res) => {
     const { id } = req.params;
     try {
-      const deleted = await FamilyMember.destroy({
-        where: { id },
-      });
+      const deleted = await FamilyMember.destroy({ where: { id } });
       if (deleted) {
         res.status(204).send();
       } else {
