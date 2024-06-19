@@ -9,6 +9,7 @@ const bcrypt = require("bcryptjs");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const cors = require("cors");
+const fs = require("fs"); // Ensure fs is defined
 
 const app = express();
 const port = process.env.PORT || 3000;
