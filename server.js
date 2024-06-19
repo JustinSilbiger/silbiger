@@ -9,7 +9,7 @@ const bcrypt = require("bcryptjs");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const cors = require("cors");
-const fs = require("fs"); // Ensure fs is defined
+const fs = require("fs");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -203,7 +203,7 @@ app.delete(
 
 // Seed database
 const seedDatabase = async () => {
-  const seedFilePath = path.join(__dirname, "seeds", "dbSeed.sql");
+  const seedFilePath = path.join(__dirname, "dbSeed.sql");
   const seedSQL = fs.readFileSync(seedFilePath, "utf-8");
 
   console.log("Starting database seeding...");

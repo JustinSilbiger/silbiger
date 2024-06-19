@@ -7,7 +7,8 @@ INSERT INTO
         birthdate,
         comments
     )
-VALUES (
+VALUES
+ (
         NULL,
         '1',
         'A',
@@ -9206,3 +9207,4 @@ VALUES (
         'Wolf I',
         NULL,
         '09.05.1877',
+;
