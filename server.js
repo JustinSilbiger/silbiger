@@ -9,12 +9,12 @@ const bcrypt = require("bcryptjs");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const cors = require("cors");
-const fs = require("fs");
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 const secret = process.env.JWT_SECRET || "your_secret_key";
+const enableRegistration = process.env.ENABLE_REGISTRATION === "true";
 
 // Middleware
 app.set("trust proxy", 1);
@@ -66,6 +66,24 @@ const authorizeAdmin = (req, res, next) => {
   next();
 };
 
+// User registration
+if (enableRegistration) {
+  app.post("/register", async (req, res) => {
+    const { username, password, role } = req.body;
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = await User.create({
+        username,
+        password: hashedPassword,
+        role,
+      });
+      res.status(201).json({ message: "User registered successfully", user });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+}
+
 // Test route to verify database connection
 app.get("/test-db", async (req, res) => {
   try {
@@ -91,41 +109,10 @@ sequelize
     console.error("Unable to connect to the database:", err);
   });
 
-const seedDatabase = async () => {
-  try {
-    const seedFilePath = path.join(__dirname, "dbSeed.sql");
-    const seedQuery = fs.readFileSync(seedFilePath, "utf-8");
-    console.log("Seeding database...");
-    await sequelize.query(seedQuery);
-    console.log("Database seeded successfully.");
-  } catch (error) {
-    console.error("Error seeding database:", error);
-  }
-};
-
 sequelize
   .sync()
-  .then(async () => {
-    console.log("Database synced");
-    await seedDatabase();
-  })
+  .then(() => console.log("Database synced"))
   .catch((err) => console.error("Error syncing database:", err));
-
-// User registration
-app.post("/register", async (req, res) => {
-  const { username, password, role } = req.body;
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({
-      username,
-      password: hashedPassword,
-      role,
-    });
-    res.status(201).json({ message: "User registered successfully", user });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
 
 // User login
 app.post("/login", async (req, res) => {
