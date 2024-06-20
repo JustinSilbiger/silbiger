@@ -12,15 +12,13 @@ const seedDatabase = async () => {
 
     console.log("Starting database seeding...");
 
-    // Check if data already exists
-    const existingCount = await FamilyMember.count();
-    console.log(`Existing family member count: ${existingCount}`);
-    if (existingCount > 0) {
-      console.log("Data already exists, skipping seeding.");
-      return;
-    }
+    // Truncate the family_members table
+    await sequelize.query(
+      'TRUNCATE TABLE "family_members" RESTART IDENTITY CASCADE;'
+    );
+    console.log("Truncated family_members table.");
 
-    // If no data exists, proceed with seeding
+    // Proceed with seeding
     await sequelize.query(seedSQL);
     console.log("Database seeded successfully.");
   } catch (error) {
