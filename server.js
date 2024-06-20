@@ -100,6 +100,7 @@ app.get("/test-db", async (req, res) => {
 // Start server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
+  console.log(`Environment: ${process.env.NODE_ENV}`);
 });
 
 // Verify database connection
@@ -121,6 +122,7 @@ sequelize
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   try {
+    console.log("Login attempt:", username);
     const user = await User.findOne({ where: { username } });
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: "Invalid username or password" });
@@ -129,8 +131,10 @@ app.post("/login", async (req, res) => {
     const token = jwt.sign({ id: user.id, role: user.role }, secret, {
       expiresIn: "1h",
     });
+    console.log("Login successful for user:", username);
     res.json({ token, role: user.role });
   } catch (error) {
+    console.error("Error during login:", error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -138,9 +142,11 @@ app.post("/login", async (req, res) => {
 // Get all family members (public)
 app.get("/family-members", async (req, res) => {
   try {
+    console.log("Fetching all family members");
     const familyMembers = await FamilyMember.findAll();
     res.json(familyMembers);
   } catch (error) {
+    console.error("Error fetching family members:", error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -149,6 +155,7 @@ app.get("/family-members", async (req, res) => {
 app.get("/family-members/:id", async (req, res) => {
   const { id } = req.params;
   try {
+    console.log(`Fetching family member with ID: ${id}`);
     const familyMember = await FamilyMember.findByPk(id);
     if (familyMember) {
       res.json(familyMember);
@@ -156,6 +163,7 @@ app.get("/family-members/:id", async (req, res) => {
       res.status(404).json({ message: "Family member not found" });
     }
   } catch (error) {
+    console.error("Error fetching family member by ID:", error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -164,6 +172,7 @@ app.get("/family-members/:id", async (req, res) => {
 app.get("/search-family-members", async (req, res) => {
   const { firstName } = req.query;
   try {
+    console.log(`Searching family members with first name: ${firstName}`);
     const familyMembers = await FamilyMember.findAll({
       where: {
         first_name: { [Op.iLike]: `%${firstName}%` },
@@ -171,6 +180,7 @@ app.get("/search-family-members", async (req, res) => {
     });
     res.json(familyMembers);
   } catch (error) {
+    console.error("Error searching family members:", error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -178,9 +188,11 @@ app.get("/search-family-members", async (req, res) => {
 // Create a new family member (admin only)
 app.post("/family-members", authenticate, authorizeAdmin, async (req, res) => {
   try {
+    console.log("Creating a new family member:", req.body);
     const familyMember = await FamilyMember.create(req.body);
     res.status(201).json(familyMember);
   } catch (error) {
+    console.error("Error creating family member:", error);
     res.status(400).json({ error: error.message });
   }
 });
@@ -193,6 +205,7 @@ app.put(
   async (req, res) => {
     const { id } = req.params;
     try {
+      console.log(`Updating family member with ID: ${id}`, req.body);
       const [updated] = await FamilyMember.update(req.body, { where: { id } });
       if (updated) {
         const updatedFamilyMember = await FamilyMember.findByPk(id);
@@ -201,6 +214,7 @@ app.put(
         res.status(404).json({ message: "Family member not found" });
       }
     } catch (error) {
+      console.error("Error updating family member:", error);
       res.status(400).json({ error: error.message });
     }
   }
@@ -214,6 +228,7 @@ app.delete(
   async (req, res) => {
     const { id } = req.params;
     try {
+      console.log(`Deleting family member with ID: ${id}`);
       const deleted = await FamilyMember.destroy({ where: { id } });
       if (deleted) {
         res.status(204).send();
@@ -221,6 +236,7 @@ app.delete(
         res.status(404).json({ message: "Family member not found" });
       }
     } catch (error) {
+      console.error("Error deleting family member:", error);
       res.status(500).json({ error: error.message });
     }
   }
@@ -228,10 +244,12 @@ app.delete(
 
 // Add the seeding script call at the end
 app.get("/seed", async (req, res) => {
+  console.log("Seeding route hit");
   try {
     await seedDatabase();
     res.status(200).send("Database seeded successfully.");
   } catch (error) {
+    console.error("Error seeding database:", error);
     res.status(500).send(`Error seeding database: ${error.message}`);
   }
 });
