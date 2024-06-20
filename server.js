@@ -85,10 +85,6 @@ if (enableRegistration) {
       res.status(400).json({ error: error.message });
     }
   });
-} else {
-  app.post("/register", (req, res) => {
-    res.status(403).json({ message: "Registration is disabled." });
-  });
 }
 
 // Test route to verify database connection
