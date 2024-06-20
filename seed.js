@@ -14,6 +14,7 @@ const seedDatabase = async () => {
 
     // Check if data already exists
     const existingCount = await FamilyMember.count();
+    console.log(`Existing family member count: ${existingCount}`);
     if (existingCount > 0) {
       console.log("Data already exists, skipping seeding.");
       return;
