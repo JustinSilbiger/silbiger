@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 
 const seedDatabase = async () => {
-  const seedFilePath = path.join(__dirname, "dbSeed.sql");
+  const seedFilePath = path.join(__dirname, "final_dbSeed.sql"); // Ensure this points to the correct file
   console.log(`Reading SQL file from: ${seedFilePath}`);
 
   try {
