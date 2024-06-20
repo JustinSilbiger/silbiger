@@ -9,6 +9,7 @@ const bcrypt = require("bcryptjs");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const cors = require("cors");
+const seedDatabase = require("./seed");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -224,3 +225,13 @@ app.delete(
     }
   }
 );
+
+// Add the seeding script call at the end
+app.get("/seed", async (req, res) => {
+  try {
+    await seedDatabase();
+    res.status(200).send("Database seeded successfully.");
+  } catch (error) {
+    res.status(500).send(`Error seeding database: ${error.message}`);
+  }
+});
