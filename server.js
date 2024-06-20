@@ -98,9 +98,17 @@ app.get("/test-db", async (req, res) => {
 });
 
 // Start server
-app.listen(port, () => {
+app.listen(port, async () => {
   console.log(`Server is running on port ${port}`);
   console.log(`Environment: ${process.env.NODE_ENV}`);
+
+  // Run the seed script
+  try {
+    await seedDatabase();
+    console.log("Database seeded successfully.");
+  } catch (error) {
+    console.error("Error seeding database:", error);
+  }
 });
 
 // Verify database connection
@@ -241,15 +249,3 @@ app.delete(
     }
   }
 );
-
-// Add the seeding script call at the end
-app.get("/seed", async (req, res) => {
-  console.log("Seeding route hit");
-  try {
-    await seedDatabase();
-    res.status(200).send("Database seeded successfully.");
-  } catch (error) {
-    console.error("Error seeding database:", error);
-    res.status(500).send(`Error seeding database: ${error.message}`);
-  }
-});
