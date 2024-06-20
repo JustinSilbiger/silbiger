@@ -26,7 +26,7 @@ app.use(
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'", "https://cdn.jsdelivr.net"],
         styleSrc: ["'self'", "https://cdn.jsdelivr.net"],
-        formAction: ["'self'", "https://formspree.io"], // Allow form actions to Formspree
+        formAction: ["'self'", "https://formspree.io"],
         objectSrc: ["'self'"],
       },
     },
@@ -85,6 +85,10 @@ if (enableRegistration) {
       res.status(400).json({ error: error.message });
     }
   });
+} else {
+  app.post("/register", (req, res) => {
+    res.status(403).json({ message: "Registration is disabled." });
+  });
 }
 
 // Test route to verify database connection
@@ -97,54 +101,14 @@ app.get("/test-db", async (req, res) => {
   }
 });
 
-// Start server
-app.listen(port, async () => {
-  console.log(`Server is running on port ${port}`);
-  console.log(`Environment: ${process.env.NODE_ENV}`);
-
-  // Run the seed script
-  try {
-    await seedDatabase();
-    console.log("Database seeded successfully.");
-  } catch (error) {
-    console.error("Error seeding database:", error);
-  }
+// Test route to verify server is running
+app.get("/ping", (req, res) => {
+  res.send("pong");
 });
 
-// Verify database connection
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Connected to PostgreSQL via Sequelize");
-  })
-  .catch((err) => {
-    console.error("Unable to connect to the database:", err);
-  });
-
-sequelize
-  .sync()
-  .then(() => console.log("Database synced"))
-  .catch((err) => console.error("Error syncing database:", err));
-
-// User login
-app.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-  try {
-    console.log("Login attempt:", username);
-    const user = await User.findOne({ where: { username } });
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({ message: "Invalid username or password" });
-    }
-
-    const token = jwt.sign({ id: user.id, role: user.role }, secret, {
-      expiresIn: "1h",
-    });
-    console.log("Login successful for user:", username);
-    res.json({ token, role: user.role });
-  } catch (error) {
-    console.error("Error during login:", error);
-    res.status(500).json({ error: error.message });
-  }
+// Simple test route
+app.get("/test", (req, res) => {
+  res.send("Test route is working");
 });
 
 // Get all family members (public)
@@ -249,3 +213,65 @@ app.delete(
     }
   }
 );
+
+// User login
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    console.log("Login attempt:", username);
+    const user = await User.findOne({ where: { username } });
+    console.log("User found:", user);
+
+    if (!user) {
+      console.log("User not found");
+      return res.status(401).json({ message: "Invalid username or password" });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    console.log("Password valid:", isPasswordValid);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Invalid username or password" });
+    }
+
+    const token = jwt.sign({ id: user.id, role: user.role }, secret, {
+      expiresIn: "1h",
+    });
+    console.log("Login successful for user:", username);
+    res.json({ token, role: user.role });
+  } catch (error) {
+    console.error("Error during login:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Start server
+app.listen(port, async () => {
+  console.log(`Server is running on port ${port}`);
+  console.log(`Environment: ${process.env.NODE_ENV}`);
+
+  // Run the seed script
+  try {
+    await seedDatabase();
+    console.log("Database seeded successfully.");
+  } catch (error) {
+    console.error("Error seeding database:", error);
+  }
+});
+
+// Verify database connection
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log("Connected to PostgreSQL via Sequelize");
+  })
+  .catch((err) => {
+    console.error("Unable to connect to the database:", err);
+  });
+
+sequelize
+  .sync()
+  .then(() => console.log("Database synced"))
+  .catch((err) => console.error("Error syncing database:", err));
+
+module.exports = app;
