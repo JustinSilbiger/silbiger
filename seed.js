@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 
 const seedDatabase = async () => {
-  const seedFilePath = path.join(__dirname, "seeds", "dbSeed.sql");
+  const seedFilePath = path.join(__dirname, "dbSeed.sql");
   const seedSQL = fs.readFileSync(seedFilePath, "utf-8");
 
   console.log("Starting database seeding...");
