@@ -237,6 +237,24 @@ app.listen(port, async () => {
   }
 });
 
+// User registration
+if (enableRegistration) {
+  app.post("/register", async (req, res) => {
+    const { username, password, role } = req.body;
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = await User.create({
+        username,
+        password: hashedPassword,
+        role,
+      });
+      res.status(201).json({ message: "User registered successfully", user });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+}
+
 // Verify database connection
 sequelize
   .authenticate()
