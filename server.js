@@ -249,7 +249,7 @@ app.listen(port, async () => {
   // Run the seed script
   try {
     await seedDatabase();
-    console.log("Database seeded successfully.");
+    console.log("Database seeded successfully!!!");
   } catch (error) {
     console.error("Error seeding database:", error);
   }
