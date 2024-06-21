@@ -26,7 +26,7 @@ app.use(
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'", "https://cdn.jsdelivr.net"],
         styleSrc: ["'self'", "https://cdn.jsdelivr.net"],
-        formAction: ["'self'", "https://formspree.io"],
+        formAction: ["'self'", "https://formspree.io"], // Allow form actions to Formspree
         objectSrc: ["'self'"],
       },
     },
@@ -68,6 +68,24 @@ const authorizeAdmin = (req, res, next) => {
   }
   next();
 };
+
+// User registration
+if (enableRegistration) {
+  app.post("/register", async (req, res) => {
+    const { username, password, role } = req.body;
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = await User.create({
+        username,
+        password: hashedPassword,
+        role,
+      });
+      res.status(201).json({ message: "User registered successfully", user });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+}
 
 // Test route to verify database connection
 app.get("/test-db", async (req, res) => {
@@ -236,24 +254,6 @@ app.listen(port, async () => {
     console.error("Error seeding database:", error);
   }
 });
-
-// User registration
-if (enableRegistration) {
-  app.post("/register", async (req, res) => {
-    const { username, password, role } = req.body;
-    try {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await User.create({
-        username,
-        password: hashedPassword,
-        role,
-      });
-      res.status(201).json({ message: "User registered successfully", user });
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  });
-}
 
 // Verify database connection
 sequelize
