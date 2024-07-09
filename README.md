@@ -8,6 +8,11 @@ The Silbiger Family Tree is a web application designed to document the genealogy
 
 This project addresses the limitations of the static legacy family website by efficiently storing family members in a PostgreSQL database. It makes it easier for users to learn about their ancestry, trace their roots, and connect with relatives.
 
+## Links
+
+- **Legacy Site:** [Silbiger Family Webiste](https://www.silbiger-family.co.uk/)
+- **New Site:** [Silbiger Family Database](https://silbiger.onrender.com)
+
 ## Quick Start
 
 ### Prerequisites
@@ -51,13 +56,8 @@ For production, use:
 npm start
 ```
 
-Visit `http://localhost:3000` in your browser to use the application. The new site can be accessed at [Silbiger Family Tree](https://silbiger.onrender.com).
+Visit `http://localhost:3000` in your browser to use the application.
 
 ## Contributing
 
 Contributions are welcome! Please fork the repository and create a pull request with your changes.
-
-## Links
-
-- **Legacy Site:** [Silbiger Family](https://www.silbiger-family.co.uk/)
-- **New Site:** [Silbiger Family Tree](https://silbiger.onrender.com)
