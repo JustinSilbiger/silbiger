@@ -2,7 +2,7 @@
 
 ## Description
 
-The Silbiger Family Tree is a web application designed to document the genealogy of the Silbiger family. It provides a platform for managing and exploring a list of over 1200 family members with an intuitive user interface. This project aims to preserve and expand upon the data from the [legacy Silbiger family website](https://www.silbiger-family.co.uk/).
+The Silbiger Family Tree is a web application designed to document the genealogy of the Silbiger family. It provides a platform for managing and exploring a list of over 1200 family members with an intuitive user interface. This project aims to preserve and expand upon the data from the legacy [Silbiger Family Website](https://www.silbiger-family.co.uk/).
 
 ## Why?
 
